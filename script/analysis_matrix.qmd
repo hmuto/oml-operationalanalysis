@@ -1,0 +1,74 @@
+---
+title: "analysis_matrix"
+format: html
+---
+
+# Ontological Modeling and Analysis using R Scripting
+
+```{r}
+library(jsonlite)
+library(dplyr)
+library(tidyr)
+library(DT)
+```
+
+# Extract Data from Fuseki
+
+-   You need to build and load oml before running below scripts.
+
+```{r}
+library(tansakusuR)
+endpoint_url <- "http://localhost:3030/example/sparql"
+```
+
+### SPARQL CODE
+
+```{r}
+query_string <- '
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX base:        <http://imce.jpl.nasa.gov/foundation/base#>
+PREFIX operational:        <http://opencaesar.io/example/vocabulary/operational#>
+
+#SELECT DISTINCT ?iri ?id ?name ?type
+SELECT DISTINCT* 
+WHERE {
+	?iri a operational:Capability ;
+		base:hasDescription ?m_name .
+  	OPTIONAL{
+    	?iri operational:isRequiredBy ?miri.
+  }
+}
+ORDER BY ?m_id
+'
+```
+
+### Query
+
+```{r}
+df_query <- send_query(endpoint_url,query_string)
+```
+
+## Create Matrx
+
+```{r}
+library(stringr)
+df <- df_query %>%
+  select(iri,miri) 
+
+df$iri <- str_extract(df$iri, "(?<=#).*")
+df$miri <- str_extract(df$miri, "(?<=#).*")
+
+# Add "x" for relationships
+df$value <- "x"
+
+# Create Matrix
+pivot_df <- df %>%
+  pivot_wider(names_from = iri, values_from = value, values_fill = "") %>%
+  arrange(miri)
+
+# 表示
+datatable(pivot_df)
+
+```
+
+\`\`\`

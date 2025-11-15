@@ -1,3 +1,42 @@
+# Query Pattern
+
+## 01 Get Capability and Mission 'operational:requires'
+```
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX base:        <http://imce.jpl.nasa.gov/foundation/base#>
+PREFIX operational:        <http://opencaesar.io/example/vocabulary/operational#>
+
+#SELECT DISTINCT ?iri ?id ?name ?type
+SELECT DISTINCT* 
+WHERE {
+	?iri a operational:Capability ;
+		base:hasDescription ?m_name .
+  	OPTIONAL{
+    	?miri operational:requires ?iri.
+  }
+}
+ORDER BY ?m_id
+```
+
+## 02 Get Capability and Mission 'operational:isRequiredBy'
+```
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX base:        <http://imce.jpl.nasa.gov/foundation/base#>
+PREFIX operational:        <http://opencaesar.io/example/vocabulary/operational#>
+
+#SELECT DISTINCT ?iri ?id ?name ?type
+SELECT DISTINCT* 
+WHERE {
+	?iri a operational:Capability ;
+		base:hasDescription ?m_name .
+  	OPTIONAL{
+    	?iri operational:isRequiredBy ?miri.
+  }
+}
+ORDER BY ?m_id
+```
+
+
 # OML Template
 
 [![Build Status](https://github.com/opencaesar/oml-template/actions/workflows/ci.yml/badge.svg)](https://github.com/opencaesar/oml-template/actions/workflows/ci.yml)

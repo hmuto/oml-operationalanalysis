@@ -1,25 +1,26 @@
-
 @dc:title "Example Vocabulary"
 @dc:creator "Example Company"
 @dc:rights "Copyright 2019, by Example Company"
 vocabulary <http://opencaesar.io/example/vocabulary/operational#> as operational {
 
 	extends <http://purl.org/dc/elements/1.1/> as dc
+
 	extends <http://www.w3.org/2000/01/rdf-schema#> as rdfs
-    extends <http://imce.jpl.nasa.gov/foundation/base#> as base
+
+	extends <http://imce.jpl.nasa.gov/foundation/base#> as base
 
 	@rdfs:label "Mission"
 	@dc:description "A [=Mission=] is a high-level goal to which one or more operational entities should contribute,
-                    and which is likely to influence system definition or usage."
-    concept Mission < base:IdentifiedElement
+	and which is likely to influence system definition or usage."
+	concept Mission < base:IdentifiedElement
 
 	@rdfs:label "Capability"
 	@dc:description "A [=Capability=] is An ability, expected of one or more operational entities,
-                     to provide a service contributing to fulfilling one or more operational missions."
-    concept Capability < base:IdentifiedElement, base:AggregatedElement[
+	to provide a service contributing to fulfilling one or more operational missions."
+	concept Capability < base:IdentifiedElement, base:AggregatedElement [
 		restricts all base:aggregates to Capability
 		restricts all base:isAggregatedIn to Capability
-    ]
+	]
 
 	@rdfs:label "Requires"
 	@dc:description "A [=Mission=] [=requires=] zero or more [=Capability=]s."
@@ -34,4 +35,11 @@ vocabulary <http://opencaesar.io/example/vocabulary/operational#> as operational
 		irreflexive
 	]
 
+	@rdfs:label "Entity"
+	@dc:description "An [=Entity=] is a real-world entity (a physical element, a group or organization, 
+	another system),carrying out operational activities to which the system is likely to contribute, or which can influence the system"
+	concept Entity < base:IdentifiedElement, base:AggregatedElement [
+		restricts all base:aggregates to Entity
+		restricts all base:isAggregatedIn to Entity
+	]
 }

@@ -2,33 +2,61 @@
 @dc:creator "Example Company"
 @dc:rights "Copyright 2019, by Example Company"
 description <http://opencaesar.io/example/description/operation#> as operation {
-	
+
 	uses <http://purl.org/dc/elements/1.1/> as dc
+
 	uses <http://opencaesar.io/example/vocabulary/operational#> as operational
+
 	uses <http://imce.jpl.nasa.gov/foundation/base#> as base
 
-
 	// Example concept instance
-	instance m1 : operational:Mission[
+	instance m1 : operational:Mission [
 		base:hasIdentifier "M.01"
 		base:hasDescription "Prevent any collision between train and road vehicles"
 	]
-	instance m2 : operational:Mission[
+
+	instance m2 : operational:Mission [
 		base:hasIdentifier "M.02"
 		base:hasDescription "Ensure fluidity in rail and road vehicle traffic"
 	]
 
-	instance c1 : operational:Capability[
+	instance c1 : operational:Capability [
 		base:hasIdentifier "C.01"
 		base:hasDescription "Acknowledge approaching trains"
 		operational:isRequiredBy m1
 		operational:isRequiredBy m2
 	]
 
-	instance c2 : operational:Capability[
+	instance c2 : operational:Capability [
 		base:hasIdentifier "C.02"
 		base:hasDescription "Forbid the simultaneous access of vehicles and trains to the crossing"
 		operational:isRequiredBy m1
 	]
 
+	instance c3 : operational:Capability [
+		base:hasIdentifier "C.03"
+		base:hasDescription "Acknowledge approaching road vehicles"
+		operational:isRequiredBy m1
+		operational:isRequiredBy m2
+	]
+
+	instance c4 : operational:Capability [
+		base:hasIdentifier "C.04"
+		base:hasDescription "Temporarily favor road traffic"
+		operational:isRequiredBy m2
+	]
+
+	instance traffic : operational:Entity [
+		// base:aggregates c4 // error :  aggregate only Entity
+		base:aggregates road-vehicle
+		base:hasCanonicalName "Traffic"
+	]
+
+	instance train : operational:Entity [
+		base:hasCanonicalName "Train"
+	]
+
+	instance road-vehicle : operational:Entity [
+		base:hasCanonicalName "Road Vehicle"
+	]
 }
