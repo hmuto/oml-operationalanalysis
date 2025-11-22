@@ -32,7 +32,7 @@ jobs:
       run: ./gradlew docs
 
     - name: Publish Docs
-      uses: actions/upload-pages-artifact@v1
+      uses: actions/upload-pages-artifact@v4
       with:
         path: build/docs
 
@@ -50,5 +50,5 @@ jobs:
     steps:
       - name: Deploy Spec
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
         
