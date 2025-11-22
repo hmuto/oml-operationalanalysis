@@ -1,0 +1,17 @@
+{
+  "name": "Java 21 Dev Container",
+  "image": "mcr.microsoft.com/devcontainers/java:21", // Java 21ベースの公式イメージ
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+//        "vscjava.vscode-java-pack"
+      ]
+    }
+  },
+  "postCreateCommand": "code --install-extension https://github.com/opencaesar/oml-vision/releases/download/v0.3.0/oml-vision-0.3.0.vsix"
+}
