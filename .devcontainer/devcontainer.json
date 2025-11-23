@@ -12,7 +12,8 @@
 //        "vscjava.vscode-java-pack"
       ]
     }
-  }
+  },
+  "postCreateCommand": "sh -c 'chmod +x .devcontainer/install_vsix.sh'"
   // This doesnt work, using task.json
 //  "postCreateCommand": "sh -c 'code --install-extension .devcontainer/oml-luxor-2.13.0.vsix && code --install-extension .devcontainer/oml-vision-0.3.0.vsix'"
 }
