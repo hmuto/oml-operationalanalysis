@@ -14,8 +14,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set lowercase owner name
-        run: echo "OWNER_LC=${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
-        # このステップで、環境変数 OWNER_LC に小文字のユーザー名がセットされます
+        # 修正: echoの後に 'export' を追加して、確実に後続ステップに引き継ぐ
+        run: echo "export OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+        # または、より簡潔に
+        # run: echo "OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Log in to GHCR
         # 環境変数を使用する際は $OWNER_LC のように参照します
