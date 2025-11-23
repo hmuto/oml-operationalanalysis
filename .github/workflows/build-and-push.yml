@@ -13,20 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set lowercase owner name
-        # 修正: echoの後に 'export' を追加して、確実に後続ステップに引き継ぐ
-        run: echo "export OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-        # または、より簡潔に
-        # run: echo "OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-
       - name: Log in to GHCR
         # 環境変数を使用する際は $OWNER_LC のように参照します
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Build Docker image
-        # 環境変数 OWNER_LC を使用
-        run: docker build -t ghcr.io/$OWNER_LC/oml-dev:latest .
+      # Build Docker image ステップを修正・統合
+      - name: Build Docker image with lowercase tag
+        run: |
+          # ここで OWNER_LC 環境変数を定義
+          OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')
+          echo "Building with tag: ghcr.io/$OWNER_LC/oml-dev:latest"
+          # 定義した環境変数を使って docker build を実行
+          docker build -t ghcr.io/$OWNER_LC/oml-dev:latest .
 
+      # Push Docker image ステップも同様に修正・統合
       - name: Push Docker image
-        # 環境変数 OWNER_LC を使用
-        run: docker push ghcr.io/$OWNER_LC/oml-dev:latest
+        run: |
+          # ここでも OWNER_LC 環境変数を再定義する必要がある (ステップが異なるため)
+          OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')
+          # 定義した環境変数を使って docker push を実行
+          docker push ghcr.io/$OWNER_LC/oml-dev:latest
