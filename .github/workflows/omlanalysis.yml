@@ -7,15 +7,13 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  oml-analysis:
     if: contains(github.event.head_commit.message, '[omlanalysis]')
-    runs-on: [ self-hosted, oml-dev ]
-    permissions:
-      contents: read
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/utnk/oml-dev:latest
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Build
         run: ./gradlew build
 
